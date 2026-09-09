@@ -25,7 +25,7 @@ import type { Activity } from "../../types/activity";
 const TicketDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { currentUser, isAdmin, isAgent, isEmployee, canEditTicket, canDeleteTicket, canAssignTicket, canAddResolution } = useAuth();
+const { currentUser, isAdmin, isAgent, isEmployee, canEditTicket, canDeleteTicket, canAssignTicket } = useAuth();
   const { showToast } = useToast();
   const { categories } = useCategories();
   const { users } = useUsers();
