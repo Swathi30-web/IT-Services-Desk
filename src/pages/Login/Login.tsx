@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
-import { getUsers } from "../../services/userService";
+import api from "../../services/api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,44 +15,52 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // If already logged in, redirect to dashboard
+  // Already logged in -> Dashboard
   useEffect(() => {
     if (currentUser) {
       navigate("/dashboard", { replace: true });
     }
   }, [currentUser, navigate]);
 
-  const handleLogin = async (event: React.FormEvent) => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     setError("");
     setLoading(true);
 
     try {
-      const users = await getUsers();
+      const response = await api.post("/login", {
+        email: email.trim(),
+        password,
+      });
 
-      const matchedUser = users.find(
-        (item) =>
-          item.email.trim().toLowerCase() === email.trim().toLowerCase() &&
-          item.password === password
-      );
+      if (response.data.success) {
+        const user = response.data.user;
 
-      if (!matchedUser) {
-        setError("Invalid email or password");
-        setLoading(false);
-        return;
+        // Store logged-in user through AuthContext
+        login(user);
+
+        showToast(`Welcome back, ${user.name}!`, "success");
+
+        navigate("/dashboard", { replace: true });
+      } else {
+        setError(response.data.message || "Invalid email or password");
       }
+    } catch (error: any) {
+      console.error("Login error:", error);
 
-      if (matchedUser.status !== "active") {
-        setError("Your account is currently inactive. Please contact the administrator.");
-        setLoading(false);
-        return;
+      if (error.response) {
+        setError(
+          error.response.data?.message ||
+            "Invalid email or password"
+        );
+      } else if (error.request) {
+        setError(
+          "Unable to connect to service. Please try again."
+        );
+      } else {
+        setError("Something went wrong. Please try again.");
       }
-
-      login(matchedUser);
-      showToast(`Welcome back, ${matchedUser.name}!`, "success");
-      navigate("/dashboard");
-    } catch {
-      setError("Unable to connect to service. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -66,7 +74,9 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
-      <div className="w-full max-w-md space-y-6 rounded-2xl bg-white p-8 shadow-xl border border-gray-100">
+      <div className="w-full max-w-md space-y-6 rounded-2xl border border-gray-100 bg-white p-8 shadow-xl">
+
+        {/* Logo / Heading */}
         <div className="text-center">
           <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-md shadow-blue-200">
             <svg
@@ -83,16 +93,19 @@ const Login = () => {
               />
             </svg>
           </div>
+
           <h1 className="text-2xl font-bold tracking-tight text-gray-900">
             IT Service Desk
           </h1>
+
           <p className="mt-1 text-sm text-gray-500">
             Sign in to access your portal
           </p>
         </div>
 
+        {/* Error Message */}
         {error && (
-          <div className="flex items-center gap-2 rounded-lg bg-red-50 p-3.5 text-sm text-red-700 border border-red-100">
+          <div className="flex items-center gap-2 rounded-lg border border-red-100 bg-red-50 p-3.5 text-sm text-red-700">
             <svg
               className="h-5 w-5 flex-shrink-0 text-red-500"
               viewBox="0 0 20 20"
@@ -104,85 +117,118 @@ const Login = () => {
                 clipRule="evenodd"
               />
             </svg>
+
             <span>{error}</span>
           </div>
         )}
 
+        {/* Login Form */}
         <form onSubmit={handleLogin} className="space-y-4">
+
+          {/* Email */}
           <div>
             <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-700">
               Email Address
             </label>
+
             <input
               type="email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                setError("");
+              }}
               placeholder="e.g. admin@gmail.com"
               required
+              autoComplete="email"
               className="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
             />
           </div>
 
+          {/* Password */}
           <div>
             <div className="mb-1.5 flex items-center justify-between">
               <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700">
                 Password
               </label>
+
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="font-medium text-xs text-blue-600 hover:text-blue-700"
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
             </div>
+
             <input
               type={showPassword ? "text" : "password"}
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => {
+                setPassword(event.target.value);
+                setError("");
+              }}
               placeholder="Enter your password"
               required
+              autoComplete="current-password"
               className="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
             />
           </div>
 
+          {/* Sign In Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-blue-600 py-2.5 font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-60 transition"
+            className="w-full rounded-lg bg-blue-600 py-2.5 font-medium text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
-        <div className="rounded-xl bg-gray-50 p-4 border border-gray-200">
+        {/* Quick Test Accounts */}
+        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
           <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
             Quick Test Accounts (Click to fill)
           </p>
+
           <div className="grid grid-cols-3 gap-2">
+
+            {/* Admin */}
             <button
               type="button"
-              onClick={() => quickFill("admin@gmail.com", "123456")}
-              className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs font-medium text-gray-700 hover:border-blue-500 hover:text-blue-600 transition"
+              onClick={() =>
+                quickFill("admin@gmail.com", "123456")
+              }
+              className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs font-medium text-gray-700 transition hover:border-blue-500 hover:text-blue-600"
             >
               👑 Admin
             </button>
+
+            {/* Agent */}
             <button
               type="button"
-              onClick={() => quickFill("agent@gmail.com", "123456")}
-              className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs font-medium text-gray-700 hover:border-blue-500 hover:text-blue-600 transition"
+              onClick={() =>
+                quickFill("agent@gmail.com", "123456")
+              }
+              className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs font-medium text-gray-700 transition hover:border-blue-500 hover:text-blue-600"
             >
               🎧 Agent
             </button>
+
+            {/* Employee */}
             <button
               type="button"
-              onClick={() => quickFill("employee@gmail.com", "123456")}
-              className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs font-medium text-gray-700 hover:border-blue-500 hover:text-blue-600 transition"
+              onClick={() =>
+                quickFill("employee@gmail.com", "123456")
+              }
+              className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs font-medium text-gray-700 transition hover:border-blue-500 hover:text-blue-600"
             >
               👤 Employee
             </button>
+
           </div>
         </div>
+
       </div>
     </div>
   );
