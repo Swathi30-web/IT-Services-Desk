@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const Sidebar = () => {
-  const { role, isAdmin, isAgent, isEmployee, logout } = useAuth();
+  const { role, isAdmin, isAgent, logout } = useAuth();
 
   // Define navigation items based on Section 21: Role-Based Navigation
   const getNavItems = () => {

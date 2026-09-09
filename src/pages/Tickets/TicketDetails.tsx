@@ -16,6 +16,7 @@ import ResolutionModal from "../../components/Tickets/ResolutionModal";
 import TicketFormModal from "../../components/Tickets/TicketFormModal";
 import Loading from "../../components/common/Loading";
 import ErrorState from "../../components/common/ErrorState";
+import EmptyState from "../../components/common/EmptyState";
 import { formatDate } from "../../utils/formatDate";
 import type { Ticket, TicketStatus, TicketPriority } from "../../types/ticket";
 import type { Comment } from "../../types/comment";
@@ -177,6 +178,7 @@ const TicketDetails = () => {
     try {
       const updated = await updateTicket(ticket.id, {
         ...ticketData,
+        preferredContactMethod: ticketData.preferredContactMethod as any,
         updatedDate: new Date().toISOString().split("T")[0],
       });
       setTicket(updated);
@@ -525,7 +527,7 @@ const TicketDetails = () => {
                 </span>
               </div>
 
-              <div className="pt-2 flex justify-between items-center">
+              <div className="pt-2 flex justify-space-between items-center">
                 <span className="text-xs text-gray-500">Updated Date</span>
                 <span className="font-semibold text-gray-800">
                   {formatDate(ticket.updatedDate)}
