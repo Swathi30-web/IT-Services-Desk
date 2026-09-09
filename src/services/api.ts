@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000",
-  timeout: 1500,
+  baseURL: import.meta.env.VITE_API_URL || "https://it-services-desk-6.onrender.com",
+  timeout: 15000,
   headers: {
     "Content-Type": "application/json",
   },
