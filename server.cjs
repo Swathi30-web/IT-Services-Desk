@@ -19,8 +19,8 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// React routes (Fixed '*' to '/*')
-app.get("/*", (req, res) => {
+// React routes (Fixed using regular expression to avoid path-to-regexp error)
+app.get(/^(?!\/api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
