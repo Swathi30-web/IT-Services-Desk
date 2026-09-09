@@ -146,7 +146,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const navItems = getNavItems();
 
   return (
-    <aside className={`w-64 flex-shrink-0 bg-gray-900 text-white flex flex-col justify-between min-h-screen ${!isOpen ? 'hidden' : ''}`}>
+    <aside className={`fixed md:static w-64 flex-shrink-0 bg-gray-900 text-white flex flex-col justify-between min-h-screen z-40 transition-transform duration-300 ${!isOpen ? '-translate-x-full md:translate-x-0' : 'translate-x-0'}`}>
       <div>
         <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-800">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 font-bold text-white shadow-md shadow-blue-500/30">

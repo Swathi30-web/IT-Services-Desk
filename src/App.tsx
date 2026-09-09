@@ -23,7 +23,15 @@ const Layout = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-950">
+    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-950 transition-colors">
+      {/* Mobile sidebar overlay backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 dark:bg-black/70 md:hidden transition-colors"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="flex flex-1 flex-col min-w-0">

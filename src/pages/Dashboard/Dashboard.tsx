@@ -61,25 +61,25 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-4 sm:p-6 bg-gray-50 dark:bg-gray-950 transition-colors min-h-screen">
       {/* Header with Welcome Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
             {isAdmin && "Admin Command Center"}
             {isAgent && "Support Agent Workspace"}
             {isEmployee && "Employee Support Portal"}
           </h1>
-          <p className="text-sm text-gray-500">
-            Welcome back, <span className="font-semibold text-gray-700">{currentUser?.name}</span>. Here is your ticket activity.
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Welcome back, <span className="font-semibold text-gray-700 dark:text-gray-300">{currentUser?.name}</span>. Here is your ticket activity.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
           {isEmployee && (
             <Link
               to="/tickets?action=create"
-              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 dark:bg-blue-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -90,7 +90,7 @@ const Dashboard = () => {
 
           <Link
             to="/tickets"
-            className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           >
             {isAdmin ? "View All Tickets" : "View My Tickets"}
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

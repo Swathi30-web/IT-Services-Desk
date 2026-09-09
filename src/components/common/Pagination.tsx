@@ -34,10 +34,10 @@ const Pagination = ({
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 py-4 px-2">
-      <p className="text-xs text-gray-500">
-        Showing <span className="font-semibold text-gray-700">{startItem}</span> to{" "}
-        <span className="font-semibold text-gray-700">{endItem}</span> of{" "}
-        <span className="font-semibold text-gray-700">{totalItems}</span> results
+      <p className="text-xs text-gray-500 dark:text-gray-400">
+        Showing <span className="font-semibold text-gray-700 dark:text-gray-300">{startItem}</span> to{" "}
+        <span className="font-semibold text-gray-700 dark:text-gray-300">{endItem}</span> of{" "}
+        <span className="font-semibold text-gray-700 dark:text-gray-300">{totalItems}</span> results
       </p>
 
       <div className="flex items-center gap-1.5 self-end sm:self-auto">
@@ -45,7 +45,7 @@ const Pagination = ({
           type="button"
           disabled={currentPage === 1}
           onClick={() => onPageChange(currentPage - 1)}
-          className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 transition"
+          className="rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-40 transition-colors"
         >
           Previous
         </button>
@@ -55,10 +55,10 @@ const Pagination = ({
             key={p}
             type="button"
             onClick={() => onPageChange(p)}
-            className={`h-8 w-8 rounded-lg text-xs font-semibold transition ${
+            className={`h-8 w-8 rounded-lg text-xs font-semibold transition-colors ${
               p === currentPage
-                ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
-                : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                ? "bg-blue-600 dark:bg-blue-700 text-white shadow-sm shadow-blue-500/30 dark:shadow-blue-900/50"
+                : "border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600"
             }`}
           >
             {p}
@@ -69,7 +69,7 @@ const Pagination = ({
           type="button"
           disabled={currentPage === totalPages}
           onClick={() => onPageChange(currentPage + 1)}
-          className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 transition"
+          className="rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-40 transition-colors"
         >
           Next
         </button>

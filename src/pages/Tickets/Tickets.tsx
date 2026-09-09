@@ -186,16 +186,16 @@ const Tickets = () => {
   if (error) return <ErrorState message={error} />;
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-4 sm:p-6 bg-gray-50 dark:bg-gray-950 transition-colors min-h-screen">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
             {isAdmin && "All Support Tickets"}
             {isAgent && "My Assigned Queue"}
             {isEmployee && "My Submitted Tickets"}
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             {isAdmin && "Review, assign, and manage tickets across the enterprise"}
             {isAgent && "Track and resolve issues assigned directly to you"}
             {isEmployee && "View status, add comments, and track resolutions for your tickets"}
@@ -206,7 +206,7 @@ const Tickets = () => {
         {(isEmployee || isAdmin) && (
           <button
             onClick={() => setIsCreateOpen(true)}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 dark:bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -217,10 +217,10 @@ const Tickets = () => {
       </div>
 
       {/* Filter and Search Toolbar */}
-      <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-100 space-y-4">
+      <div className="rounded-2xl bg-white dark:bg-gray-800 p-4 sm:p-5 shadow-sm border border-gray-100 dark:border-gray-700 space-y-4 transition-colors">
         {/* Search Input */}
         <div className="relative">
-          <svg className="absolute left-3.5 top-3 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="absolute left-3.5 top-3 h-4 w-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
@@ -228,7 +228,7 @@ const Tickets = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by Ticket ID, Subject, Employee name, or Agent name..."
-            className="w-full rounded-xl border border-gray-200 pl-10 pr-4 py-2.5 text-sm outline-none transition focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+            className="w-full rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 pl-10 pr-4 py-2.5 text-sm outline-none transition focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500"
           />
         </div>
 
@@ -236,11 +236,11 @@ const Tickets = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 text-xs">
           {/* Status Filter */}
           <div>
-            <label className="block font-semibold uppercase text-gray-400 mb-1">Status</label>
+            <label className="block font-semibold uppercase text-gray-400 dark:text-gray-500 mb-1">Status</label>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full rounded-lg border border-gray-200 bg-white px-2.5 py-2 outline-none focus:border-blue-600"
+              className="w-full rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-2.5 py-2 outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors"
             >
               <option value="all">All Statuses</option>
               <option value="open">Open</option>
@@ -256,11 +256,11 @@ const Tickets = () => {
 
           {/* Priority Filter */}
           <div>
-            <label className="block font-semibold uppercase text-gray-400 mb-1">Priority</label>
+            <label className="block font-semibold uppercase text-gray-400 dark:text-gray-500 mb-1">Priority</label>
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="w-full rounded-lg border border-gray-200 bg-white px-2.5 py-2 outline-none focus:border-blue-600"
+              className="w-full rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-2.5 py-2 outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors"
             >
               <option value="all">All Priorities</option>
               <option value="low">Low</option>
@@ -272,11 +272,11 @@ const Tickets = () => {
 
           {/* Category Filter */}
           <div>
-            <label className="block font-semibold uppercase text-gray-400 mb-1">Category</label>
+            <label className="block font-semibold uppercase text-gray-400 dark:text-gray-500 mb-1">Category</label>
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full rounded-lg border border-gray-200 bg-white px-2.5 py-2 outline-none focus:border-blue-600"
+              className="w-full rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-2.5 py-2 outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors"
             >
               <option value="all">All Categories</option>
               {categories.map((c) => (
@@ -290,11 +290,11 @@ const Tickets = () => {
           {/* Assigned Agent Filter (Admin only) */}
           {isAdmin && (
             <div>
-              <label className="block font-semibold uppercase text-gray-400 mb-1">Agent</label>
+              <label className="block font-semibold uppercase text-gray-400 dark:text-gray-500 mb-1">Agent</label>
               <select
                 value={agentFilter}
                 onChange={(e) => setAgentFilter(e.target.value)}
-                className="w-full rounded-lg border border-gray-200 bg-white px-2.5 py-2 outline-none focus:border-blue-600"
+                className="w-full rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-2.5 py-2 outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors"
               >
                 <option value="all">All Agents</option>
                 <option value="unassigned">Unassigned</option>

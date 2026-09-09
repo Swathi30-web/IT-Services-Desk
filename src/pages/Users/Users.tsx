@@ -117,20 +117,20 @@ const Users = () => {
   if (error) return <ErrorState message={error} />;
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-4 sm:p-6 bg-gray-50 dark:bg-gray-950 transition-colors min-h-screen">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
             User Management (Admin Only)
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             Create, manage, and assign roles to system employees and support agents
           </p>
         </div>
 
         <button
           onClick={handleOpenAdd}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 dark:bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -140,7 +140,7 @@ const Users = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-4">
+      <div className="rounded-2xl bg-white dark:bg-gray-800 p-4 sm:p-5 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 transition-colors">
         <div className="flex-1">
           <input
             type="text"
@@ -150,7 +150,7 @@ const Users = () => {
               setCurrentPage(1);
             }}
             placeholder="Search by name, email, department, ID..."
-            className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+            className="w-full rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 px-4 py-2.5 text-sm outline-none focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 transition-colors"
           />
         </div>
 
@@ -161,7 +161,7 @@ const Users = () => {
               setRoleFilter(e.target.value);
               setCurrentPage(1);
             }}
-            className="rounded-xl border border-gray-200 bg-white px-3 py-2 outline-none focus:border-blue-600"
+            className="rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-3 py-2 outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors"
           >
             <option value="all">All Roles</option>
             <option value="admin">Admin</option>
@@ -175,7 +175,7 @@ const Users = () => {
               setStatusFilter(e.target.value);
               setCurrentPage(1);
             }}
-            className="rounded-xl border border-gray-200 bg-white px-3 py-2 outline-none focus:border-blue-600"
+            className="rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-3 py-2 outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors"
           >
             <option value="all">All Statuses</option>
             <option value="active">Active</option>
