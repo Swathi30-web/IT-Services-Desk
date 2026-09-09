@@ -1,7 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
-const Sidebar = () => {
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { role, isAdmin, isAgent, logout } = useAuth();
 
   // Define navigation items based on Section 21: Role-Based Navigation
@@ -141,13 +146,13 @@ const Sidebar = () => {
   const navItems = getNavItems();
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-gray-900 text-white flex flex-col justify-between min-h-screen">
+    <aside className={`w-64 flex-shrink-0 bg-gray-900 text-white flex flex-col justify-between min-h-screen ${!isOpen ? 'hidden' : ''}`}>
       <div>
         <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-800">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 font-bold text-white shadow-md shadow-blue-500/30">
             IT
           </div>
-          <div>
+          <div className="flex-1">
             <h2 className="text-base font-bold text-white tracking-wide">
               IT Service Desk
             </h2>
@@ -155,6 +160,25 @@ const Sidebar = () => {
               {role ? role.replace("_", " ") : "Portal"}
             </p>
           </div>
+          <button
+            onClick={onClose}
+            className="md:hidden p-1 rounded hover:bg-gray-800"
+            title="Close sidebar"
+          >
+            <svg
+              className="h-5 w-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
         </div>
 
         <nav className="space-y-1.5 p-4">
