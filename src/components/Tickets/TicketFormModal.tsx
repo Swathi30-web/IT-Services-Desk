@@ -108,15 +108,16 @@ const TicketFormModal = ({
       onClose={onClose}
       title={isEdit ? `Edit Ticket: ${initialTicket?.id}` : "Create New Support Ticket"}
     >
-      <form onSubmit={handleSubmit} className="space-y-4 mt-2">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 mt-2">
         {errors.form && (
-          <div className="rounded-lg bg-red-50 p-3 text-xs text-red-700 border border-red-200">
+          <div className="rounded-lg bg-red-50 dark:bg-red-950/30 p-3 text-xs text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800">
             {errors.form}
           </div>
         )}
 
+        {/* Subject Field */}
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1">
             Subject <span className="text-red-500">*</span>
           </label>
           <input
@@ -124,19 +125,20 @@ const TicketFormModal = ({
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Brief summary of the issue"
-            className={`w-full rounded-lg border px-3.5 py-2 text-sm outline-none transition ${
+            className={`w-full rounded-lg border px-3.5 py-2.5 text-sm outline-none transition dark:bg-gray-700 dark:text-gray-100 ${
               errors.subject
-                ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                : "border-gray-300 focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                ? "border-red-500 focus:ring-1 focus:ring-red-500 dark:border-red-600"
+                : "border-gray-300 dark:border-gray-600 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500"
             }`}
           />
           {errors.subject && (
-            <p className="mt-1 text-xs text-red-500">{errors.subject}</p>
+            <p className="mt-1 text-xs text-red-500 dark:text-red-400">{errors.subject}</p>
           )}
         </div>
 
+        {/* Description Field */}
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1">
             Description <span className="text-red-500">*</span> (min 10 characters)
           </label>
           <textarea
@@ -144,26 +146,27 @@ const TicketFormModal = ({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Provide clear details regarding the problem you are experiencing..."
-            className={`w-full rounded-lg border px-3.5 py-2 text-sm outline-none transition ${
+            className={`w-full rounded-lg border px-3.5 py-2.5 text-sm outline-none transition dark:bg-gray-700 dark:text-gray-100 resize-none ${
               errors.description
-                ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                : "border-gray-300 focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                ? "border-red-500 focus:ring-1 focus:ring-red-500 dark:border-red-600"
+                : "border-gray-300 dark:border-gray-600 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500"
             }`}
           />
           {errors.description && (
-            <p className="mt-1 text-xs text-red-500">{errors.description}</p>
+            <p className="mt-1 text-xs text-red-500 dark:text-red-400">{errors.description}</p>
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        {/* Category and Priority - Stack on mobile, side-by-side on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1">
               Category <span className="text-red-500">*</span>
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-3 py-2.5 text-sm outline-none focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 transition-colors"
             >
               {categories.map((c) => (
                 <option key={c.id} value={c.name}>
@@ -172,18 +175,18 @@ const TicketFormModal = ({
               ))}
             </select>
             {errors.category && (
-              <p className="mt-1 text-xs text-red-500">{errors.category}</p>
+              <p className="mt-1 text-xs text-red-500 dark:text-red-400">{errors.category}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1">
               Priority <span className="text-red-500">*</span>
             </label>
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value as TicketPriority)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-3 py-2.5 text-sm outline-none focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 transition-colors"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -191,13 +194,14 @@ const TicketFormModal = ({
               <option value="critical">Critical</option>
             </select>
             {errors.priority && (
-              <p className="mt-1 text-xs text-red-500">{errors.priority}</p>
+              <p className="mt-1 text-xs text-red-500 dark:text-red-400">{errors.priority}</p>
             )}
           </div>
         </div>
 
+        {/* Contact Method Selection */}
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
             Preferred Contact Method <span className="text-red-500">*</span>
           </label>
           <div className="grid grid-cols-3 gap-2">
@@ -206,10 +210,10 @@ const TicketFormModal = ({
                 type="button"
                 key={method}
                 onClick={() => setPreferredContactMethod(method)}
-                className={`flex items-center justify-center gap-1.5 rounded-lg border py-2 text-xs font-semibold capitalize transition ${
+                className={`flex items-center justify-center gap-1.5 rounded-lg border py-2.5 text-xs font-semibold capitalize transition ${
                   preferredContactMethod === method
-                    ? "border-blue-600 bg-blue-50 text-blue-700"
-                    : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
+                    ? "border-blue-600 dark:border-blue-500 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400"
+                    : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600"
                 }`}
               >
                 {method === "email" && "✉️ Email"}
@@ -220,18 +224,19 @@ const TicketFormModal = ({
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+        {/* Form Actions - Stack on mobile */}
+        <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={submitting}
-            className="rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50 transition"
+            className="rounded-lg bg-blue-600 dark:bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 transition-colors"
           >
             {submitting ? "Saving..." : isEdit ? "Update Ticket" : "Submit Ticket"}
           </button>

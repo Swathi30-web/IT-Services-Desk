@@ -8,6 +8,7 @@ import Pagination from "../../components/common/Pagination";
 import Loading from "../../components/common/Loading";
 import ErrorState from "../../components/common/ErrorState";
 import EmptyState from "../../components/common/EmptyState";
+import CollapsiblePanel from "../../components/common/CollapsiblePanel";
 import { createUser, updateUser, deleteUser } from "../../services/userService";
 import type { User, UserRole, UserStatus } from "../../types/user";
 
@@ -18,6 +19,7 @@ const Users = () => {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [showFilterPanel, setShowFilterPanel] = useState(false);
 
   // Modals
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -140,52 +142,125 @@ const Users = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="rounded-2xl bg-white dark:bg-gray-800 p-4 sm:p-5 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 transition-colors">
-        <div className="flex-1">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setCurrentPage(1);
-            }}
-            placeholder="Search by name, email, department, ID..."
-            className="w-full rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 px-4 py-2.5 text-sm outline-none focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 transition-colors"
-          />
+      <div className="space-y-4">
+        <div className="rounded-2xl bg-white dark:bg-gray-800 p-4 sm:p-5 shadow-sm border border-gray-100 dark:border-gray-700 transition-colors">
+          <div className="flex gap-3 items-end">
+            <div className="flex-1">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setCurrentPage(1);
+                }}
+                placeholder="Search by name, email, department, ID..."
+                className="w-full rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 px-4 py-2.5 text-sm outline-none focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 transition-colors"
+              />
+            </div>
+
+            {/* Mobile Filter Toggle Button */}
+            <button
+              onClick={() => setShowFilterPanel(!showFilterPanel)}
+              className="md:hidden inline-flex items-center gap-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors whitespace-nowrap"
+              title="Toggle filters"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+              Filters
+            </button>
+          </div>
         </div>
 
-        <div className="flex gap-3 text-xs">
-          <select
-            value={roleFilter}
-            onChange={(e) => {
-              setRoleFilter(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-3 py-2 outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors"
-          >
-            <option value="all">All Roles</option>
-            <option value="admin">Admin</option>
-            <option value="support_agent">Support Agent</option>
-            <option value="employee">Employee</option>
-          </select>
+        {/* Desktop Filters */}
+        <div className="hidden md:flex gap-3 text-xs">
+          <div className="rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2">
+            <select
+              value={roleFilter}
+              onChange={(e) => {
+                setRoleFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="rounded-lg bg-white dark:bg-gray-700 dark:text-gray-100 outline-none focus:border-blue-600 dark:focus:border-blue-500"
+            >
+              <option value="all">All Roles</option>
+              <option value="admin">Admin</option>
+              <option value="support_agent">Support Agent</option>
+              <option value="employee">Employee</option>
+            </select>
+          </div>
 
-          <select
-            value={statusFilter}
-            onChange={(e) => {
-              setStatusFilter(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-3 py-2 outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors"
-          >
-            <option value="all">All Statuses</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
+          <div className="rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2">
+            <select
+              value={statusFilter}
+              onChange={(e) => {
+                setStatusFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="rounded-lg bg-white dark:bg-gray-700 dark:text-gray-100 outline-none focus:border-blue-600 dark:focus:border-blue-500"
+            >
+              <option value="all">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
         </div>
+
+        {/* Mobile Collapsible Filter Panel */}
+        {showFilterPanel && (
+          <div className="md:hidden space-y-3">
+            <CollapsiblePanel
+              title="Role"
+              defaultOpen={true}
+              icon={
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              }
+            >
+              <select
+                value={roleFilter}
+                onChange={(e) => {
+                  setRoleFilter(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="w-full rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-3 py-2 outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors"
+              >
+                <option value="all">All Roles</option>
+                <option value="admin">Admin</option>
+                <option value="support_agent">Support Agent</option>
+                <option value="employee">Employee</option>
+              </select>
+            </CollapsiblePanel>
+
+            <CollapsiblePanel
+              title="Status"
+              defaultOpen={false}
+              icon={
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              }
+            >
+              <select
+                value={statusFilter}
+                onChange={(e) => {
+                  setStatusFilter(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="w-full rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-gray-100 px-3 py-2 outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors"
+              >
+                <option value="all">All Statuses</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </CollapsiblePanel>
+          </div>
+        )}
       </div>
 
       {/* Users Table */}
-      <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-100">
+      <div className="rounded-2xl bg-white dark:bg-gray-800 p-4 sm:p-5 shadow-sm border border-gray-100 dark:border-gray-700 transition-colors">
         {filteredUsers.length === 0 ? (
           <EmptyState message="No users match your criteria." />
         ) : (
