@@ -5,9 +5,6 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// --------------------
-// CORS
-// --------------------
 app.use(
   cors({
     origin: [
@@ -19,34 +16,34 @@ app.use(
   })
 );
 
-// --------------------
-// Middleware
-// --------------------
 app.use(express.json());
 
-// --------------------
-// Health Check
-// --------------------
+// Health
 app.get("/api/health", (req, res) => {
-  res.status(200).json({
+  res.json({
     success: true,
     message: "IT Service Desk server is running",
   });
 });
 
-// --------------------
-// Test API
-// --------------------
-app.get("/api/test", (req, res) => {
-  res.json({
-    success: true,
-    message: "API connection successful",
-  });
+// Users
+app.get("/api/users", (req, res) => {
+  res.json([
+    {
+      id: 1,
+      name: "Admin",
+      email: "admin@gmail.com",
+      role: "admin",
+    },
+    {
+      id: 2,
+      name: "User",
+      email: "user@gmail.com",
+      role: "user",
+    },
+  ]);
 });
 
-// --------------------
-// Start Server
-// --------------------
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });
